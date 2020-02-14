@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %} {{ profile }}{% endblock title %}
+{% block body %}
+<div class="row mt-4">
+    <div class="col-lg-4">
+        <!-- Card Regular -->
+        <div class="card card-cascade">
+
+            <!-- Card image -->
+            <div class="view view-cascade overlay">
+                <img class="card-img-top" src="{{ profile.avatar.url }}" alt="Card image cap">
+                <a>
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+            </div>
+
+            <!-- Card content -->
+            <div class="card-body card-body  text-center">
+
+                <!-- Title -->
+                <h4 class="card-title text-center mb-3"><strong class="border px-3 myColor">{{ profile }}</strong>
+                </h4>
+                <!-- Subtitle -->
+                <h6 class=""><span class="font-weight-bold">Full Name:</span> {{ profile.get_full_name }}</h6>
+                <h6 class=""><span class="font-weight-bold">Date of Birth:</span> {{ profile.birth_date }}</h6>
+                <!-- Text -->
+                {% if request.user == profile %}
+                <a href="{% url 'profile_update' %}" class="btn mdb unique-color btn-sm text-light">Edit Profile</a>
+                {% endif %}
+            </div>
+
+        </div>
+        <!-- Card Regular -->
+    </div>
+    <div class="col-lg-8 ">
+        <h3 class=" h3 myColor">{{ profile }}'s Album</h3>
+        <hr class="mdb unique-color">
+        <div class="row">
+            {% for album in profile.albums.all %}
+            <div class="col-lg-4">
+                <!-- Card -->
+                <div class="card mdb grey lighten-4 mb-3">
+                    <!--Card image-->
+                    <div class="view overlay">
+                        <img class="card-img-top" src="{{ album.album_logo.url }}"
+                            alt="Card image cap">
+                        <a href="{{ album.get_absolute_url }}">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+                    <!--Card content-->
+                    <div class="card-body text-center">
+                        <!--Title-->
+                        <h5 class="card-title">{{ album.album_title }}</h5>
+                        <!--Text-->
+                        <p class=""><span class="h6">Artist: </span>{{ album.artist }}</p>
+
+                    </div>
+                </div>
+                <!-- Card -->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

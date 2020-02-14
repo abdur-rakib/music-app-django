@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %} {{ title }}{% endblock title %}
+{% block body %}
+<div class="row mt-4">
+    <div class="col-lg-7">
+        <div class="card card mdb grey lighten-4 p-5 ">
+            <h1 class="mb-4">Add a new album</h2>
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                        <div class="alert alert-danger alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>{{ field.label }}: {{ error|escape }}</strong>
+                        </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+                {% if error_message %}
+                <div class="alert alert-danger alert-dismissable">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{ error_message }}</strong>
+                </div>
+                {% endif %}
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    {% if field.name == 'private' %}
+                    <!-- Default checked -->
+                    <!-- <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="id_{{ field.name }}"  >
+                        <label class="custom-control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+                    </div> -->
+                    <div>
+                        <label for="private" class="mr-1">Private</label>
+                    <span >{{ field }}</span>
+                    </div>
+                    {% else %}
+                    <div class="file-upload-wrapper">
+                        {% if field.name == 'album_logo' %}
+                        <label for="{{ field.name }}">Album logo:</label> <br>
+                        {% endif %}
+                        <input type="{{ field.field.widget.input_type }}"
+                            class="{{ field.field.widget.attrs.class }} mb-3" name="{{ field.name }}"
+                            id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    <!-- {{ form.private }} -->
+
+                    <button class="btn btn-md text-light mdb unique-color btn-block my-4" type="submit">Create</button>
+                </form>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card card mdb grey lighten-4 p-4">
+            <h3>What is Music App?</h3>
+            <p>Music App is an app that allows you to listen music anywhere anytime by simply uploading and storing all
+                your
+                music on the cloud.</p>
+            <h3>How do I add music?</h3>
+            <p>First, create a new album by filling out the form on this page. Once an album is created you will be able
+                to add/upload songs.</p>
+            <h3>What are some Album logo best practices?</h3>
+            <ul>
+                <li>Have a resolution of 512x512</li>
+                <li>Use common image formats such as .JPG, .GIF, or .PNG</li>
+                <li>Remain under the 2MB limit.</li>
+                <li>Square images look best</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $('.file-upload').file_upload();
+</script>
+{% endblock %}

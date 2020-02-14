@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %} Favourite{% endblock title %}
+
+{% block body %}
+<h2 class="mt-4 mb-4">Favorite Albums and Songs</span> </h2>
+<button class="btn mdb unique-color btn-md text-light ml-0">Albums</button>
+<a href="{% url 'music:favourite_songs' %}" class="btn btn-outline-dark btn-md text-light ml-0">SONGS</a>
+<div class="row">
+    {% for album in albums %}
+    
+    <div class="col-md-3 mb-4">
+        <!-- Card -->
+        <div class="card mdb grey lighten-4">
+            <!--Card image-->
+            <div class="view overlay">
+                <img class="card-img-top" src="{{ album.album.album_logo.url }}" alt="Card image cap">
+                <a href="{{ album.album.get_absolute_url }}">
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+            </div>
+            <!--Card content-->
+            <div class="card-body">
+                <!--Title-->
+                <h4 class="card-title ml-2">{{ album.album.album_title }}</h4>
+                <!--Text-->
+                <p class="ml-2"><span class="h6">Artist: </span>{{ album.album.artist }}</p>
+
+                
+            </div>
+        </div>
+        <!-- Card -->
+    </div>
+        
+    {% empty %}
+    <h4 class="ml-3">No favourite albums found</h4>
+    {% endfor %}
+</div>
+
+{% endblock %}

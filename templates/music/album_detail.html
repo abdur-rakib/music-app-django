@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% load custom_tags %}
+
+
+{% block title %} {{ album.album_title }}{% endblock title %}
+{% block body %}
+
+<div class="row mt-4">
+    <div class="col-lg-4">
+        <!-- Card -->
+        <div class="card mdb grey lighten-4">
+            <!--Card image-->
+            <div class="view overlay">
+                <img class="card-img-top" src="{{ album.album_logo.url }}" alt="Card image cap">
+                <a href="">
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+            </div>
+            <!--Card content-->
+            <div class="card-body text-center">
+                <!--Title-->
+                <h4 class="card-title">{{ album.album_title }}</h4>
+                <!--Text-->
+                <p class="lead"><span class="h6 ">Artist: </span>{{ album.artist }}</p>
+                <p class=""><span class="h6 ">Author: </span><a class="myColor" href="{{ album.user.get_absolute_url }}">{{ album.user }}</a></p>
+                <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+
+                {% if request.user == album.user %}
+                <span><a href="{% url 'music:delete_album' album.slug %}" ><i
+                            class="far fa-trash-alt border border-dark text-dark p-2 mx-2 mt-md-2"></i></a></i></span>
+                {% endif %}
+                {% is_favourite_album request.user album as favourite %}
+                <span><a href="{% url 'music:favourite_album' album.slug %}"><i
+                    class="{% if favourite  %} fas {% else %} far {% endif %} fa-heart border border-dark text-dark p-2 mx- mt-md-2"></i></a></span>
+                        
+            </div>
+        </div>
+        <!-- Card -->
+    </div>
+    <div class="col-lg-8">
+        <button class="btn text-light mdb unique-color btn-md mx-2 px-3 ">View All</button>
+        {% if request.user == album.user %}
+        <a href="{% url 'music:song_create' album.slug %}" class="text-dark px-3 js-create-book">Add New Song</a>
+        {% endif %}
+        <div class="card p-4 ml-2 mt-2 mdb grey lighten-4">
+            <h3>All songs</h3>
+            <table class="table">
+                {% if album.songs.all %}
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Audio File</th>
+                        <th>Favorite</th>
+
+                        {% if request.user == album.user %}
+                        <th>Actions</th>
+                        {% endif %}
+
+                    </tr>
+                </thead>
+                {% else %}
+                No songs
+                {% endif %}
+                <tbody>
+
+                    {% for song in album.songs.all %}
+                    <td>{{ song.song_title }}</td>
+                    <td>
+                        <a>
+                            <audio onplay="pauseOthers(this);" controls>
+                                <source src="{{MUSIC_URL}}{{ song.audio_file.url }}" type="audio/mp3" />
+                            </audio>
+                        </a>
+                    </td>
+                    <td>
+                        {% is_favourite_song request.user song as favourite %}
+                        <span><a href="{% url 'music:favourite_song' album.slug song.slug %}"><i
+                            class="{% if favourite  %} fas {% else %} far  {% endif %} fa-heart border border-dark text-dark  p-2 "></i></a></span>
+                    </td>
+
+                    {% if request.user == album.user %}
+                    <td>
+                        <span><a href="{% url 'music:delete_song' album.slug song.slug %} " class="" >
+                            <i class="far fa-trash-alt border border-dark text-dark p-2 mx-2"></i></a></i></span>
+                    </td>
+                    {% endif %}
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% endblock %}

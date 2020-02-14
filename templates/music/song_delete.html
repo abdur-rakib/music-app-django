@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="row mt-4 justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <form action='.' method='POST'>{% csrf_token %}
+                <h4>Do you want to delete the song "{{ song.song_title }}"?</h4>
+                <p> <a class="btn btn-md btn-info" href="{{ album.get_absolute_url }}">Cancel</a><input class="btn btn-danger btn-md px-5" type='submit' value='Yes' /> </p>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

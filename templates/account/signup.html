@@ -1,0 +1,38 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% block title %}Sign Up{% endblock title %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-3">{% trans "Sign Up" %}</h1>
+{% if form.errors %}
+{% for field in form %}
+{% for error in field.errors %}
+<div class="alert alert-danger alert-dismissable">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>{{ field.label }}: {{ error|escape }}</strong>
+</div>
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  {% for field in form %}
+  <div class="">
+    <input type="{{ field.field.widget.input_type }}" class="form-control mb-3" name="{{ field.name }}"
+      id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
+  </div>
+  {% endfor %}
+
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button class="btn btn-md text-light mdb unique-color btn-block my-4" type="submit">Sign up</button>
+</form>
+<p>{% blocktrans %}Already have an account? Then please <a class="myColor" href="{{ login_url }}">sign
+    in</a>.{% endblocktrans %}</p>
+
+{% endblock %}

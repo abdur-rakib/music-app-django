@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %} Update Profile{% endblock title %}
+{% block body %}
+<div class="row mt-4  justify-content-center">
+    <div class="col-lg-6">
+        <div class="card card mdb grey lighten-4 p-4 ">
+        <h1 class="mb-4 text-center">Update Profile</h1>
+            {% if form.errors %}
+            {% for field in form %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{ field.label }}: {{ error|escape }}</strong>
+            </div>
+            {% endfor %}
+            {% endfor %}
+            {% endif %}
+            {% if error_message %}
+            <div class="alert alert-danger alert-dismissable">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>{{ error_message }}</strong>
+            </div>
+            {% endif %}
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-12 form-group">
+                        <label for="username">Username</label>
+                        <input id="username" name="username" type="text" class="form-control" value="{{ form.username.value|default_if_none:"" }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 form-group">
+                        <label for="first_name">First Name</label>
+                        <input id="first_name" name="first_name" type="text" placeholder=""
+                               class="form-control" value="{{ form.first_name.value|default_if_none:"" }}">
+                    </div>
+                    <div class="col-lg-6 form-group">
+                        <label for="last_name">Last Name</label>
+                        <input id="last_name" name="last_name" type="text" placeholder=""
+                               class="form-control" value="{{ form.last_name.value|default_if_none:"" }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 form-group">
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="text" placeholder=""
+                               class="form-control" value="{{ form.email.value|default_if_none:"" }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6 form-group">
+                        <label for="birth_date">Birth Date</label>
+                        <input id="birth_date" name="birth_date" type="date" class="form-control" value="{{ form.birth_date.value|date:'mm/dd/yyyy' }}">
+                    </div>
+                    <div class="col-xl-6 mt-4">
+                        <p class="mt-3">{{ form.birth_date.value }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6 form-group">
+                        <img src="{{ form.avatar.value.url }}" alt="" class="img-fluid">
+                    </div>
+                    <div class="col-xl-6 form-group">
+                        {{ form.avatar }}
+                    </div>
+                    
+                </div>
+
+                <button class="btn btn-md text-light mdb unique-color btn-block my-4" type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
